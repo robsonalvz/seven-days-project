@@ -5,12 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 
-
+app.use(require('./routes'));
 app.use(cors());
-
-
-app.get('/', (req,res)=>{
-    res.send('Bem vindo a tela inicial!');
-})
-
 app.listen(3333);
+
