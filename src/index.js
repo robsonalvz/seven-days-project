@@ -8,6 +8,10 @@ const uuid = require('uuid/v4');
 const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
 
+mongoose.connect('mongodb+srv://sisalfa:sisalfa@cluster0-oq7yn.mongodb.net/test?retryWrites=true&w=majority',{
+    useNewUrlParser:true,
+})
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }))

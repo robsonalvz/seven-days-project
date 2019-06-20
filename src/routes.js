@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = new express.Router();
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
 
 const users = [{ id: '242424', email: 'test@test.com', password: 'password'}]
 
@@ -26,6 +26,13 @@ passport.serializeUser((user, done)=>{
     console.log('Inside serializeUser callback. User id is save the session file store');
     done(null,user.id);
 });
+
+passport.deserializeUser((id, done) => {
+    console.log('Inside deserializeUser callback')
+    console.log(`The user id passport saved in the session file store is: ${id}`)
+    const user = users[0].id === id ? users[0] : false; 
+    done(null, user);
+  });
 
 routes.use(passport.initialize());
 routes.use(passport.session());
@@ -56,5 +63,15 @@ routes.post('/login', (req,res, next)=>{
         })
     })(req, res, next);
 });
+
+routes.get('/authrequired', (req, res) => {
+    console.log('Inside GET /authrequired callback')
+    console.log(`User authenticated? ${req.isAuthenticated()}`)
+    if(req.isAuthenticated()) {
+      res.send('you hit the authentication endpoint\n')
+    } else {
+      res.redirect('/')
+    }
+  })
 
 module.exports = routes;
