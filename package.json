@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-      "dev": "nodemon src/index.js"
-   },
+    "dev": "nodemon src/index.js"
+  },
   "license": "MIT",
   "author": "robsonalvz",
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.0",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
