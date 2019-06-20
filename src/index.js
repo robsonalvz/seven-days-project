@@ -3,9 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 /** Cors Allow all applications types to access backend */
 const cors = require('cors');
+
 const app = express();
 
 app.use(require('./routes'));
+
 app.use(cors());
-app.listen(3333);
+app.listen(3333,()=>{
+    console.log('Listening on 3333');
+});
 
