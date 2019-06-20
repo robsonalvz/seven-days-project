@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = new express.Router();
 const passport = require('passport');
+const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
 const UserController = require('./controllers/UserController')
 //const users = [{ id: '242424', email: 'test@test.com', password: 'password'}]
@@ -12,11 +13,14 @@ passport.use(new LocalStrategy(
         console.log('Inside local strategy callback')
         UserController.findByEmail(email)
         .then(user => {
-            if (email == user.email && password == user.password ){
-                console.log('Local strategy return true')
-                return done(null,user)
+            if (!user) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
             }
-        });
+            if (!bcrypt.compareSync(password, user.password)) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
+            }
+            return done(null, user);
+        }).catch(error => done(error));
 
     }
     ));
@@ -30,8 +34,9 @@ passport.use(new LocalStrategy(
     passport.deserializeUser((id, done) => {
         console.log('Inside deserializeUser callback')
         console.log(`The user id passport saved in the session file store is: ${id}`)
-        const user = users[0].id === id ? users[0] : false; 
-        done(null, user);
+        UserController.findById(id)
+        .then(user => done(null,user))
+        .catch(error => done(error, false))
     });
     
     routes.use(passport.initialize());
@@ -54,12 +59,14 @@ routes.get('/login', (req,res)=>{
 routes.post('/login', (req,res, next)=>{
     console.log('Inside POST/ login callback function');
     passport.authenticate('local', (err, user, info)=>{
-      
-        req.login(user, (err)=>{
-          
-            return res.send('You were authenticated & logged in!\n');
+        if(info) {return res.send(info.message)}
+        if (err) { return next(err); }
+        if (!user) { return res.redirect('/login'); }
+        req.login(user, (err) => {
+          if (err) { return next(err); }
+          return res.redirect('/authrequired');
         })
-    })(req, res, next);
+      })(req, res, next);
 });
 
 routes.get('/authrequired', (req, res) => {

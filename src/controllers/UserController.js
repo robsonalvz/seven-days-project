@@ -1,8 +1,13 @@
 const User = require('../models/User');
+const bcrypt = require('bcrypt-nodejs');
+
 
 module.exports = {
     async save(req,res){
-        const {email, password} = req.body;
+        const salt = bcrypt.genSaltSync(10);
+        var {email, password} = req.body; 
+        password =  bcrypt.hashSync(password, salt);
+        console.log(password);
         const user = await User.create({
             email,
             password
@@ -11,6 +16,10 @@ module.exports = {
     },
     async findByEmail(email){
         const user = await User.findOne({ email:email});
+        return user;
+    },
+    async findById(id){
+        const user = await User.findOne({ id:id});
         return user;
     },
 };
