@@ -1,0 +1,16 @@
+{
+  "name": "seven-days-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+      "dev": "nodemon src/index.js"
+   },
+  "license": "MIT",
+  "author": "robsonalvz",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
