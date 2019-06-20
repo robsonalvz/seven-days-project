@@ -3,33 +3,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 /** Cors Allow all applications types to access backend */
 const cors = require('cors');
-const session = require('express-session');
-const uuid = require('uuid/v4');
-const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
 
 mongoose.connect('mongodb+srv://sisalfa:sisalfa@cluster0-oq7yn.mongodb.net/test?retryWrites=true&w=majority',{
     useNewUrlParser:true,
 })
 
+mongoose.set('useCreateIndex', true);
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.use(session({
-    genid:(req)=>{
-        console.log('Inside the session on the middleware')
-        console.log(req.sessionID)
-        return uuid() // return UUIDs for session IDs
-    },
-    store: new FileStore(),
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized:true,
-}))
-app.use(require('./routes'));
 
+app.use(require('./routes/routes'));
+app.use(require('./routes/user'));
+//registers our authentication routes with Express.
 app.use(cors());
 app.listen(3333,()=>{
     console.log('Listening on 3333');
