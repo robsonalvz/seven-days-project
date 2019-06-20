@@ -6,8 +6,12 @@ const cors = require('cors');
 const session = require('express-session');
 const uuid = require('uuid/v4');
 const FileStore = require('session-file-store')(session);
+const bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use(session({
     genid:(req)=>{
@@ -15,7 +19,7 @@ app.use(session({
         console.log(req.sessionID)
         return uuid() // return UUIDs for session IDs
     },
-    store:new FileStore(),
+    store: new FileStore(),
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized:true,
