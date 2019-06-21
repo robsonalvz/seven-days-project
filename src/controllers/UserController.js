@@ -1,9 +1,10 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const secret = process.env.SECRET || 'the default secret';
 
+require('dotenv').config();
+
+const secret = process.env.SECRET || 'some other secret as default';
 
 module.exports = {
     async save(req,res){
@@ -39,7 +40,7 @@ module.exports = {
                      id: user._id,
                      name: user.name
                   };
-                  jwt.sign(payload, secret, { expiresIn: 36000 },
+                  jwt.sign(payload, secret, { expiresIn: "7d" },
                           (err, token) => {
                             if (err) res.status(500)
                             .json({ error: "Error signing token",
