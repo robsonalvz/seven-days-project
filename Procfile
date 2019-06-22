@@ -1,1 +1,1 @@
-web: yarn dev:server
+web: node src/index.js
