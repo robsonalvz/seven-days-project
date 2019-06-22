@@ -21,7 +21,7 @@ app.use(require('./routes/routes'));
 app.use(require('./routes/user'));
 //registers our authentication routes with Express.
 app.use(cors());
-app.listen(3333,()=>{
+app.listen(process.env.PORT || 3333,()=>{
     console.log('Listening on 3333');
 });
 
