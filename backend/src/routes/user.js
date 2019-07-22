@@ -6,12 +6,10 @@ const router = new express.Router();
 // BcryptJS is a no setup encryption tool
 
 
-const UserController = require('../controllers/UserController')
+const UserController = require('../app/controllers/UserController')
 
 router.post('/register', UserController.save );
 
 router.post('/login', UserController.login);
-
-router.get('/list', UserController.find)
 
 module.exports = router

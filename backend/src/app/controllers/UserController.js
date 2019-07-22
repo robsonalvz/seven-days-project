@@ -8,6 +8,7 @@ const secret = process.env.SECRET || 'some other secret as default';
 
 module.exports = {
     async save(req,res){
+        console.log('teste')
         User.findOne({emailAddress: req.body.emailAddress})
         .then(user => {
             if(user){
@@ -55,16 +56,4 @@ module.exports = {
                 }
         }).catch(err => res.status(400).json(err));
       },
-    async findByEmail(email){
-        const user = await User.findOne({ email:email});
-        return user;
-    },
-    async findById(id){
-        const user = await User.findOne({ id:id});
-        return user;
-    },
-    async find(req,res){
-        const users = await User.find();
-        return res.json({users})
-    },
 };

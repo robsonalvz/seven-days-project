@@ -5,11 +5,10 @@ ExtractJwt = require('passport-jwt').ExtractJwt;//this is using ES6 Destructurin
 // const Strategy = pp-jwt.Strategy;
 // const ExtractJwt = pp-jwt.ExtractJwt;
 require('dotenv').config();
-const mongoose = require('mongoose');
 
 const secret = process.env.SECRET || 'some other secret as default';
 
-const User = require('./src/models/User');
+const User = require('./src/app/models/User');
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: secret
